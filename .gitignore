@@ -1,0 +1,34 @@
+venv/
+env/
+.venv/
+.env
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+.ipynb_checkpoints/
+
+# Bỏ qua toàn bộ dữ liệu cào được và dữ liệu NLP để tránh đầy Git
+data/raw/*
+data/processed/*
+*.json
+*.csv
+
+
+# Bỏ qua các file mô hình Word Embedding (vì dung lượng thường rất lớn)
+*.model
+*.vec
+*.bin
+
+
+.scrapy/
+*.log
+
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
