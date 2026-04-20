@@ -46,7 +46,7 @@ class Word2Vec:
         return loss
     
     def train(self, training_data, epochs=10):
-        print(f"Bắt đầu huấn luyện Word2Vec trong {epochs} Epochs...")
+        print(f"Bat dau huan luyen Word2Vec trong {epochs} Epochs...")
         loss_history = []
         for epoch in range(epochs):
             total_loss = 0
@@ -55,6 +55,29 @@ class Word2Vec:
                 total_loss += loss
             avg_loss = total_loss / len(training_data)
             loss_history.append(avg_loss)
-            print(f"Epoch {epoch + 1:03d}/{epochs} | Trị giá sai số (Loss): {avg_loss:.4f}")
+            print(f"Epoch {epoch + 1:03d}/{epochs} | Tri gia sai so (Loss): {avg_loss:.4f}")
         return loss_history
+    
+    def predict_context(self,word_id,top_n=3):
+        y_pred, _, _ = self.forward_propagation(word_id)
+        top_indices = np.argsort(y_pred)[-top_n:][::-1]
+        results = [(idx, y_pred[idx]) for idx in top_indices]
+        return results
+    
+    def get_similar_words(self, word_id, top_n=3):
+        target_vector=self.W1[word_id]
+        scores=[]
+        for i in range(self.vocab_size):
+            if i==word_id: continue
+            other_vector=self.W1[i]
+            norm_a=np.linalg.norm(target_vector)
+            norm_b=np.linalg.norm(other_vector)
+            dot_product=np.dot(target_vector,other_vector)
+            sim = 0.0
+            if norm_a > 0 and norm_b > 0:
+                sim = dot_product / (norm_a * norm_b)
+                
+            scores.append((i, sim))
+        scores.sort(key=lambda x: x[1], reverse=True)
+        return scores[:top_n]
             
